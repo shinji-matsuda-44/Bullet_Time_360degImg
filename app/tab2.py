@@ -179,7 +179,7 @@ class Tab2(ttk.Frame):
             _, self.original_current_frame = self.cap.read()
             self.total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
             self.seek_scale.configure(to=self.total_frames)
-            self.make_map = MakeMap.MakeMap()
+            #self.make_map = MakeMap.MakeMap()
             #マウスイベントの変数のリセット
             self.g_drag_flag = False
             self.g_prev_x, self.g_prev_y = None, None
@@ -321,6 +321,8 @@ class Tab2(ttk.Frame):
         if self.g_drag_flag:
             if self.g_prev_x is not None and self.g_prev_y is not None:
                 self.is_update_g_diff = True
+                print(f"event.x = {event.x}")
+                print(f"event.y = {event.y}")
                 self.g_diff_x, self.g_diff_y = self.g_prev_x - event.x, self.g_prev_y - event.y
         self.g_prev_x, self.g_prev_y = event.x, event.y
 

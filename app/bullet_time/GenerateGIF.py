@@ -25,5 +25,3 @@ class GenerateGIF:
         # GIF画像を保存する
         output_folder = os.path.join(input_folder, output_gif_filename)
         frames[0].save(output_folder, save_all=True, append_images=frames[1:], loop=0, duration=frame_duration)  # durationはフレーム間の時間間隔（ミリ秒）
-
-        print("GIF画像が生成されました。")

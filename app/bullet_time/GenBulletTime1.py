@@ -7,7 +7,6 @@ import os
 import cv2
 import glob
 import math
-import time
 import subprocess
 import numpy as np
 from bullet_time import GenProjectedImg
@@ -52,7 +51,6 @@ class GenBulletTime1:
             os.makedirs(hidden_folder_path2)
             subprocess.run(['attrib', '+h', hidden_folder_path2], check=True) #windowsなら必要
 
-        start_time = time.time()
         for i in range(len(path_img_files)):
             #(fixed_)rotation_matrix.txtと(fixed_)translation_vector.txtの読み込み
             if os.path.exists(os.path.join(path_external_folders[i], 'rotation_matrix.txt')):
@@ -75,6 +73,7 @@ class GenBulletTime1:
             view_point_of_world = np.append(view_point_3D, 1) #同次座標系にする
             view_point_of_camera = np.dot(external_matrix, view_point_of_world) #そのまま視線ベクトルとなる。定数倍の不定性なし
             sight_vector = (view_point_of_camera[0], view_point_of_camera[1], view_point_of_camera[2])
+            print(f"view_point_of_camera = {view_point_of_camera}")
             theta_eye, phi_eye = convTool.vector2angle(sight_vector)
 
             #透視投影画像を隠れフォルダへ保存
@@ -85,9 +84,6 @@ class GenBulletTime1:
             PC = PaintCircle.PaintCircle()
             point_projected_img = PC.paint_circle((int(projected_img.shape[1]/2), int(projected_img.shape[0]/2)), projected_img)
             cv2.imwrite(os.path.join(hidden_folder_path2, f'with_point_img_{i+1}.jpg'), point_projected_img)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print("経過時間:", elapsed_time, "秒")
 
         #gif画像を隠れフォルダへ保存
         GGIF = GenerateGIF.GenerateGIF()

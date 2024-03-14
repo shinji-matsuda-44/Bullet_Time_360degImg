@@ -82,9 +82,6 @@ class Tab3(ttk.Frame):
         self.frame_screen.propagate(False)
         self.frame_screen.pack(expand=True, padx=10, pady=10)
         self.screen = ttk.Label(self.frame_screen, text='No media', anchor='center')
-        #self.screen.bind("<ButtonPress-1>", self.on_button_press)
-        #self.screen.bind("<B1-Motion>", self.on_mouse_motion)
-        #self.screen.bind("<ButtonRelease-1>", self.on_button_release)
         self.screen.pack(expand=1, fill='both')
 
         #一定間隔で繰り返し実行
@@ -225,11 +222,8 @@ class Tab3(ttk.Frame):
             if self.selected_file:
                 if self.original_current_frame is not None:
                     frame = self.original_current_frame
-                    #phi, theta = self.make_map.update_map(self.g_diff_x, self.g_diff_y, self.is_update_g_diff)
-                    #remap_frame = self.remap_image(frame, phi, theta)
                     resized_frame = cv2.resize(frame, (self.screen_width, self.screen_height))
                     self.current_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
-                    #self.is_update_g_diff = False
 
                 if self.current_frame is not None:
                     self.photo = ImageTk.PhotoImage(image=Image.fromarray(self.current_frame))

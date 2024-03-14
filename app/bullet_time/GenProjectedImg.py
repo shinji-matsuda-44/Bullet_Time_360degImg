@@ -66,8 +66,6 @@ class GenProjectedImg:
         print(f"zoom level = {self.zoom_level}")
         dx = 2/self.zoom_level*math.tan(self.THETA/2)/Wp
         dy = 2/self.zoom_level*math.tan(self.PHI/2)/Hp
-        print(f"dx = {dx}")
-        print(f"dy = {dy}")
 
         #回転行列を計算
         R = Rotation.Rotation(theta_eye, phi_eye, psi_eye)
@@ -78,6 +76,7 @@ class GenProjectedImg:
         sight_rotation_matrix = np.dot(R_psi, R_theta_phi) #全ての回転
 
         #画素の対応付け(アルゴリズムの2〜4)
+        """
         for up in range(Wp):
             for vp in range(Hp):
                 sight_vector = convTool.coordinate2vector(up, vp, Wp, Hp, dx, dy) #視線ベクトル
@@ -85,5 +84,41 @@ class GenProjectedImg:
                 theta, phi = convTool.vector2angle(rotated_sight_vector) #角度の計算
                 ue, ve = convTool.angle2coordinate(theta, phi, We, He) #cylinder_imgの対応する画素
                 projected_img[vp, up] = cylinder_img[int(ve), int(ue)]
+        """
+        # パラメータ
+        oWh = 0.5 * Wp
+        oHh = 0.5 * Hp
+        src_h, src_w = cylinder_img.shape[: 2]
+
+        # remap用変数
+        map_u = np.zeros((Hp, Wp), dtype=np.float32)
+        map_v = np.zeros((Hp, Wp), dtype=np.float32)
+
+        # 一括計算用の出力画像の画素座標データ
+        u = np.arange(0, Wp, 1)
+        v = np.arange(0, Hp, 1)
+        dst_u, dst_v = np.meshgrid(u, v)
+
+        # 視線ベクトルを計算
+        x = dx * (dst_u - oWh)
+        y = dy * (dst_v - oHh)
+        z = np.ones((Hp, Wp))
+
+        # 回転行列で回転
+        Rr = sight_rotation_matrix
+        Xx = Rr[0][0] * x + Rr[0][1] * y + Rr[0][2] * z
+        Xy = Rr[1][0] * x + Rr[1][1] * y + Rr[1][2] * z
+        Xz = Rr[2][0] * x + Rr[2][1] * y + Rr[2][2] * z
+                
+        # 視線ベクトルから角度を計算
+        theta = np.arctan2(Xx, Xz)
+        phi = -np.arctan2(Xy, np.sqrt(Xx**2 + Xz**2))
+
+        # 角度から入力画像の座標を計算
+        map_u = (0.5 * (theta + np.pi) * src_w / np.pi).astype(np.float32)
+        map_v = ((0.5 * np.pi - phi) * src_h / np.pi).astype(np.float32)
+                
+        #remap
+        projected_img = cv2.remap(cylinder_img, map_u, map_v, cv2.INTER_CUBIC)
 
         return projected_img, sight_rotation_matrix

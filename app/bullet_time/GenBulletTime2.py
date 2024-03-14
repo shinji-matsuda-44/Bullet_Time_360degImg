@@ -77,7 +77,6 @@ class GenBulletTime2:
                                 (view_point_3D[1]-camera_position[1])**2 + \
                                 (view_point_3D[2]-camera_position[2])**2)
             distance_camera_to_viewpoint.append(distance)
-            print(f"distance = {distance}")
 
         for i in range(len(path_img_files)):
             rotation_matrix = list_rotation_matrix[i]

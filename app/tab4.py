@@ -14,7 +14,6 @@ from PIL import Image, ImageTk
 from bullet_time import GenViewPoint
 from bullet_time import GenBulletTime1
 from bullet_time import GenBulletTime2
-from bullet_time import GenBulletTimeEX
 from bullet_time import PaintCircle
 
 
@@ -275,7 +274,7 @@ class LongTaskThread(threading.Thread):
 
         #バレットタイム画像の生成
         if self.parent.scale_image is False:
-            print("スケーリングなし")
+            print("スケーリングなしでバレットタイムを作成")
             GBT = GenBulletTime1.GenBulletTime1(
                 img_folder,
                 external_folder,
@@ -284,7 +283,7 @@ class LongTaskThread(threading.Thread):
             self.parent.hidden_folder_path_no_point, self.parent.hidden_folder_path_with_point \
             = GBT.generate_bullet_time()
         else:
-            print("スケーリングあり")
+            print("スケーリングありでバレットタイムを作成")
             GBT = GenBulletTime2.GenBulletTime2(
                 img_folder,
                 external_folder,
