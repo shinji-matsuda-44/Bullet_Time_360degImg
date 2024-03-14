@@ -30,8 +30,6 @@ class Tab3(ttk.Frame):
         self.list_sight_rotation_matrix = [] #注視画像生成に用いた光軸の回転行列
         self.is_all_registered = False #全ての動画のフレームが登録されているか
 
-        
-
         #デフォルトのタブサイズ
         self.defalt_tab_width = 0
         self.defalt_tab_height = 0

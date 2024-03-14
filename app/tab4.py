@@ -59,7 +59,6 @@ class Tab4(ttk.Frame):
         #スケーリング処理のフラグ
         self.scale_image = False
 
-
         #ファイルリスト
         self.frame_list = tk.Frame(self, width=self.left_side_width, height=self.winfo_height())
         self.frame_list.pack(side='left')

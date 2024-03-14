@@ -321,8 +321,6 @@ class Tab2(ttk.Frame):
         if self.g_drag_flag:
             if self.g_prev_x is not None and self.g_prev_y is not None:
                 self.is_update_g_diff = True
-                print(f"event.x = {event.x}")
-                print(f"event.y = {event.y}")
                 self.g_diff_x, self.g_diff_y = self.g_prev_x - event.x, self.g_prev_y - event.y
         self.g_prev_x, self.g_prev_y = event.x, event.y
 
