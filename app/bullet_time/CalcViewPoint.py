@@ -38,3 +38,4 @@ class CalcViewPoint:
         print("計算完了")
 
         return view_point_3D
+        

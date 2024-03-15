@@ -91,3 +91,4 @@ class GenBulletTime1:
         GGIF.generateGIF(hidden_folder_path2)
         
         return hidden_folder_path1, hidden_folder_path2
+    
